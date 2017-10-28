@@ -1,8 +1,7 @@
-//import com.lucidchart.sbt.scalafmt.ScalafmtCorePlugin.autoImport.scalafmtTestOnCompile
+import com.lucidchart.sbt.scalafmt.ScalafmtCorePlugin.autoImport.scalafmtTestOnCompile
 import sbt.Keys.scalacOptions
 
-name := "scala-ts-compiler"
-version := "0.1-SNAPSHOT"
+
 
 // TODO: Different versions between 2.11 and 2.12
 lazy val compilerOptions = Seq(
@@ -23,35 +22,40 @@ lazy val compilerOptions = Seq(
   // Seq("-Ydelambdafy:method", "-Ybackend:GenBCode","-Xsource:2.12", "-Ywarn-unused", "-Ywarn-unused-import")
 
 lazy val commonSettings = Seq(
-  scalaVersion := "2.12.3",
+  version := "0.1-SNAPSHOT",
+  scalaVersion := "2.12.4",
   organization := "nl.codestar",
-  scalacOptions ++= compilerOptions
+  scalacOptions ++= compilerOptions,
   // Code formatting
-  //scalafmtOnCompile in Compile := true,
-  //scalafmtTestOnCompile in Compile := true
+  scalafmtOnCompile in Compile := true,
+  scalafmtTestOnCompile in Compile := true
 )
 
 lazy val macros = (project in file("macros"))
     .settings(
       commonSettings,
-      libraryDependencies += Def.setting { "org.scala-lang" % "scala-reflect" % scalaVersion.value }.value
+      libraryDependencies += Def.setting { "org.scala-lang" % "scala-reflect" % scalaVersion.value }.value,
+      name := "scala-tsi-macros"
     )
 
 lazy val root = (project in file("."))
     .dependsOn(macros)
     .settings(
       commonSettings,
-      libraryDependencies ++= dependencies
+      name := "scala-tsi",
+      libraryDependencies ++= Seq(
+        "com.github.pathikrit" %% "better-files" % "3.1.0",
+        // TODO: Remove
+        "com.github.scopt"     %% "scopt"        % "3.7.0",
+        "org.scalatest"        %% "scalatest"    % "3.0.1"  % "test"
+      )
     )
 
-lazy val `scala-tsi-sbt` = (project in file("plugin"))
-    .dependsOn(macros, root)
+lazy val plugin = (project in file("plugin"))
+    .enablePlugins(SbtTwirl)
     .settings(
-      commonSettings ++ (sbtPlugin := true)
+      commonSettings,
+      name := "scala-tsi-sbt",
+      sbtPlugin := true,
+      TwirlKeys.templateFormats += "scala" -> "play.twirl.api.TxtFormat"
     )
-
-lazy val dependencies = Seq(
-  "com.github.pathikrit" %% "better-files" % "3.1.0",
-  "com.github.scopt" %% "scopt"          % "3.7.0",
-  "org.scalatest"    %% "scalatest"      % "3.0.1"            % "test"
-)
