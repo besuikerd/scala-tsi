@@ -6,10 +6,8 @@ import _root_.nl.codestar.scala.ts.interface.TSNamedType
 import _root_.nl.codestar.scala.ts.interface.TypescriptType.TypescriptNamedType
 import _root_.java.io.File
 
-/** User imports */
-@for(imp <- imports) {
-import @imp
-}
+// User imports
+import /* If you get an error here, make sure the packages and classes exists and are available in this project*/ @{imports.mkString(", ")}
 
 object ApplicationTypescriptGeneration {
 

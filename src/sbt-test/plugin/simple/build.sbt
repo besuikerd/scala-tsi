@@ -9,5 +9,5 @@ lazy val root = (project in file("."))
     typescriptGenerationImports in Compile := Seq("domain._"),
     typescriptClassesToGenerateFor in Compile := Seq("Foo"),
     typescriptOutputFile in Compile := "IFoo.ts",
-    libraryDependencies += "nl.codestar" % "scala-ts-compiler" % "0.1-SNAPSHOT"
+    libraryDependencies += "nl.codestar" %% "scala-tsi" % "0.1-SNAPSHOT"
   )
