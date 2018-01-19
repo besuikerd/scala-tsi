@@ -39,6 +39,9 @@ object TypescriptType {
 
   case class TSAlias(name: String, underlying: TypescriptType)
       extends TypescriptNamedType
+      with TypescriptAggregateType {
+    def nested = Set(underlying)
+  }
   case object TSAny extends TypescriptType
   case class TSArray(elementType: TypescriptType)
       extends TypescriptAggregateType { def nested = Set(elementType) }
