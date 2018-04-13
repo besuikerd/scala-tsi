@@ -1,4 +1,4 @@
-@(imports: Seq[String], classes: Seq[String], targetFile: String)
+@(imports: Seq[String], classes: Seq[String], targetFile: String, outputFormat: String)
 
 package nl.codestar.scalatsi.generator
 
@@ -22,7 +22,8 @@ object ApplicationTypescriptGeneration {
   // TODO: If we want to support scala 2.11 the last must not have a trailing comma
 
   val options = _root_.nl.codestar.scalatsi.output.OutputOptions(
-    targetFile = new File("@targetFile")
+    targetFile = new File("@targetFile"),
+    outputFormat = outputFormat
   )
 
   def main(args: Array[String]): Unit = {

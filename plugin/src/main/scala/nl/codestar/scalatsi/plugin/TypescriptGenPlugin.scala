@@ -17,6 +17,7 @@ object TypescriptGenPlugin extends AutoPlugin {
       "Additional imports (i.e. your packages so you don't need to prefix your classes)")
     val typescriptOutputFile = SettingKey[File](
       "File where all typescript interfaces will be written to")
+    val typescriptOutputFormat = SettingKey[String](s"Output to format the value to (typescript/mobx)")
   }
 
   import autoImport._
@@ -37,7 +38,8 @@ object TypescriptGenPlugin extends AutoPlugin {
       typescriptGenerationImports.value,
       typescriptClassesToGenerateFor.value,
       sourceManaged.value,
-      typescriptOutputFile.value),
+      typescriptOutputFile.value,
+      typescriptOutputFormat.value),
     sourceGenerators in Compile += generateTypescriptGeneratorApplication in Compile,
   )
 
@@ -45,7 +47,8 @@ object TypescriptGenPlugin extends AutoPlugin {
       imports: Seq[String],
       typesToGenerate: Seq[String],
       sourceManaged: File,
-      typescriptOutputFile: File): Seq[File] = {
+      typescriptOutputFile: File,
+      outputFormat: String): Seq[File] = {
     val targetFile = sourceManaged / "nl" / "codestar" / "scala" / "ts" / "generator" / "ApplicationTypescriptGeneration.scala"
 
     val toWrite: String = txt
