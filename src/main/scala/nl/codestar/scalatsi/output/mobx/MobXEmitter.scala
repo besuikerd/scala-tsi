@@ -9,7 +9,10 @@ object MobXEmitter {
   def emit(types: Seq[TypescriptNamedType]): String = {
     val doc = TypeFlattener.flatten(types)
       .foldLeft[Doc](empty)(_ $$ empty $$ toDoc(_))
-    DocPrinter.pp(doc)
+
+    val program = imports $$ doc
+
+    DocPrinter.pp(program)
   }
 
   def toDoc(tp: TypescriptNamedType): Doc =
@@ -22,10 +25,14 @@ object MobXEmitter {
   def typeDefinitionName(tp: TypescriptNamedType): String = s"${tp.name}Type"
 
   def typeDefinition(tp: TypescriptNamedType): Doc =
-    "export type " <> typeDefinitionName(tp) <> " Type = typeof " <> tp.name <> ".Type"
+    "export type " <> typeDefinitionName(tp) <> " = typeof " <> tp.name <> ".Type"
 
   def interfaceDefinitionName(tp: TypescriptNamedType): String = s"I${tp.name}"
 
   def interfaceDefinition(tp: TypescriptNamedType): Doc =
     "export interface " <> interfaceDefinitionName(tp) <> " extends " <> typeDefinitionName(tp) <> " {}"
+
+
+  def imports: Doc =
+    """import { types } from "mobx-state-stree""""
 }
