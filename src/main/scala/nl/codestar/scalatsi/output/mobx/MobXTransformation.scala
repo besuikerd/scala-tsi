@@ -3,8 +3,6 @@ package nl.codestar.scalatsi.output.mobx
 import nl.codestar.scalatsi.TypescriptType
 import nl.codestar.scalatsi.TypescriptType._
 
-import scala.collection.immutable.ListMap
-
 object MobXTransformation {
   def transform(tp: TypescriptType): MobXType = tp match {
     case aggregate: TypescriptAggregateType => transformAggregate(aggregate)
@@ -17,6 +15,7 @@ object MobXTransformation {
     case TSString => MobXString()
     case TSUndefined => MobXUndefined()
     case TSVoid => MobXUndefined()
+    case TSExternalName(name) => MobXExternalName(name)
   }
 
   def transformLiteral(tp: TSLiteralType[_]): MobXType = tp match {

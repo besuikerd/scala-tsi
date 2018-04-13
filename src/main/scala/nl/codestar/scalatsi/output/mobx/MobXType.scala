@@ -30,6 +30,8 @@ case class MobXFrozen() extends MobXType
 
 case class MobXAlias(name: String, inner: MobXType) extends MobXType
 
+case class MobXExternalName(name: String) extends MobXType
+
 object MobXType {
 
 

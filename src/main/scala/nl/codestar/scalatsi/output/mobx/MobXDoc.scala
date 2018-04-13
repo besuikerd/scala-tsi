@@ -11,6 +11,7 @@ object MobXDoc {
     case MobXNull() => types("null")
     case MobXUndefined() => types("undefined")
     case MobXArray(inner) => types("array", toDoc(inner))
+    case MobXExternalName(name) => name
 
     case MobXEntity(name, fields) =>
       "types.entity(" <> nameArg(name) <> "{" <> newline <>
