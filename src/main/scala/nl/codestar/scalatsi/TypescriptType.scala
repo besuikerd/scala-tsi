@@ -178,4 +178,5 @@ object TypescriptType {
     "static",
     "yield"
   )
+
 }
