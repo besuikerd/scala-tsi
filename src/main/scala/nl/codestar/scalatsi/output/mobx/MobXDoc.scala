@@ -49,7 +49,7 @@ object MobXDoc {
     case MobXLate(inner) => types("late", toDoc(inner))
     case MobXFrozen() => types("frozen")
 
-    case MobXAlias(name, inner) => toDoc(inner)
+    case MobXAlias(name, inner) => name
   }
 
   def nameArg(name: Option[String]): Doc = optional(name.map(quoted(_) <> ", "))

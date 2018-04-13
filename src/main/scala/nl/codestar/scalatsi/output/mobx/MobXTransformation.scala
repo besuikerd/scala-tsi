@@ -3,6 +3,8 @@ package nl.codestar.scalatsi.output.mobx
 import nl.codestar.scalatsi.TypescriptType
 import nl.codestar.scalatsi.TypescriptType._
 
+import scala.collection.immutable.ListMap
+
 object MobXTransformation {
   def transform(tp: TypescriptType): MobXType = tp match {
     case aggregate: TypescriptAggregateType => transformAggregate(aggregate)
@@ -39,5 +41,19 @@ object MobXTransformation {
       MobXCompose(None, tpes)
     case TSUnion(of) =>
       MobXUnion(of.map(transform))
+  }
+
+  def aliasNamedTypes(tp: TypescriptType): TypescriptType = tp match {
+    case TSArray(elementType) => TSArray(aliasInnerType(elementType))
+    case TSInterface(name, members) => TSInterface(name, members.map{case (k, v) => (k, aliasInnerType(v))})
+    case TSIntersection(of) => TSIntersection(of.map(aliasInnerType))
+    case TSTuple(of) => TSTuple(of.map(aliasInnerType))
+    case TSUnion(of) => TSUnion(of.map(aliasInnerType))
+    case other => other
+  }
+
+  def aliasInnerType(inner: TypescriptType): TypescriptType = inner match {
+    case named: TypescriptNamedType => TSAlias(named.name, named)
+    case other => other
   }
 }
