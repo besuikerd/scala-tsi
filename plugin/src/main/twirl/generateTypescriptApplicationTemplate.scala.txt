@@ -23,7 +23,7 @@ object ApplicationTypescriptGeneration {
 
   val options = _root_.nl.codestar.scalatsi.output.OutputOptions(
     targetFile = new File("@targetFile"),
-    outputFormat = outputFormat
+    outputFormat = "@outputFormat"
   )
 
   def main(args: Array[String]): Unit = {

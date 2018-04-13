@@ -11,13 +11,20 @@ object TypescriptGenPlugin extends AutoPlugin {
     val generateTypescriptGeneratorApplication = TaskKey[Seq[File]](
       "generateTypescriptGeneratorApplication",
       "Generate an application that will generate typescript from the classes that are configured")
+
     val typescriptClassesToGenerateFor =
-      SettingKey[Seq[String]]("Classes to generate typescript interfaces for")
+      SettingKey[Seq[String]](
+        "typescriptClassesToGenerateFor",
+        "Classes to generate typescript interfaces for")
     val typescriptGenerationImports = SettingKey[Seq[String]](
+      "typescriptGenerationImports",
       "Additional imports (i.e. your packages so you don't need to prefix your classes)")
     val typescriptOutputFile = SettingKey[File](
+      "typescriptOutputFile",
       "File where all typescript interfaces will be written to")
-    val typescriptOutputFormat = SettingKey[String](s"Output to format the value to (typescript/mobx)")
+    val typescriptOutputFormat = SettingKey[String](
+      "typescriptOutputFormat",
+      s"Output to format the value to (typescript/mobx)")
   }
 
   import autoImport._
@@ -55,7 +62,9 @@ object TypescriptGenPlugin extends AutoPlugin {
       .generateTypescriptApplicationTemplate(
         imports,
         typesToGenerate,
-        typescriptOutputFile.getAbsolutePath)
+        typescriptOutputFile.getAbsolutePath,
+        outputFormat
+      )
       .body
       .stripMargin
 
